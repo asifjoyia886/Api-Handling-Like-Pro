@@ -1,1 +1,86 @@
+fetch()--------->modern js function ,you need to import a liabruary like axios .basicaly it is used to make the network calls 
+fetch-------->request------------------server
+              final-response<---json()<----response<-------|
+---->us mai ap ko respnse ko json mai krna prta ha khud s by calling .json() function lga k phr ap us ko milta ha json formate mai data
+--->if response is correct it will recieve in the then() block if 
+it fails it will be captured inside the catch() blck ,
+----->works on mechanics of the promise ,it returns the promise()
+----->fetch(url,{method,headers:{},body:JSON.stringify{}
+--->ap us ko async &&awit k sath use kr skta ha whihc is good choice 
+---->eror handling gracefully handle ni krta ,try and catch mai wrap krna prta ha
+-----------------------exmple----------------
+async function getData() {
+  try {
+    const res = await fetch('https://api.com/user');
+    if (!res.ok) throw new Error('Request failed!');
+    const data = await res.json();
+    console.log(data);
+  } catch (err) {
+    console.error(err.message);
+  }
+}
+---------------------------------------------------
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const data = {
+    name: document.querySelector('#name').value,
+    email: document.querySelector('#email').value
+  };
+
+  const res = await fetch('/submit', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(data)
+  });
+
+  const result = await res.json();
+  console.log(result);
+});
+-------------------sendings coockies--------------------------
+---->ap request mai coocke bhej skta hai even headers mai bhe lekn ik issue ha agr server side mai coocke hn un ka agr attribute =sameSite  -->stich ya lax ha phr ap bheje ga phr bhe ni jae ga
+--->Access-Control-Allow-Origin  ye bhe ap ko add krna prta ha
+
+-----------------------Request ka dosra treqA BHEJNA KA-------
+const request = new Request("https://example.com", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ name: "Rameesa" }),
+});
+
+fetch(request);
+---------------------------------siGNAL to cancel req----------->
+const controller = new AbortController();
+
+fetch("https://example.com", {
+  signal: controller.signal
+});
+
+controller.abort(); // request cancel ho gayi
+
+------------------------------status for reponse and error------>
+🟢 ok true → Response successful (status 200–299)
+🔴 ok false → Error (e.g. 404, 500 etc.)
+____________________________________________________________________
+--------------------------Strame Reading-------------------
+🔐 Locked vs Disturbed (Fetch API Response Body)
+
+    Locked:
+    Jab tum response.body.getReader() use karti ho, stream lock ho jati hai.
+    ➤ Ab koi aur us stream ko access nahi kar sakta.
+
+    Disturbed:
+    Jab tum response.text(), json(), ya blob() se data read karti ho, stream disturbed ho jati hai.
+    ➤ Uske baad dobara read karna nahi chalega.
+
+✅ Yaad rakhne wala rule:
+
+    "Ek response body sirf ek hi baar read ho sakti hai."
+
+Bas ek hi method use karo (ya getReader() ya .text() / .json()).
+       __________________________________________________________
+
+
+
+
 
